@@ -41,7 +41,7 @@ Count_data
 #removing genes with all zero values
 ##df1[rowSums(df1[])>0,]
 #?DESeq
-dds = DESeqDataSetFromMatrix(countData = round(Count_data),
+dds <- DESeqDataSetFromMatrix(countData = round(Count_data),
                              colData = Col_data,
                              design = ~ condition) # we're testing for the different condidtions
 dds$condition <- relevel(dds$condition, ref = "normal")
