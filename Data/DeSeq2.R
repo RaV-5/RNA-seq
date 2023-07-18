@@ -7,7 +7,7 @@ BiocManager::install("DESeq2")
 library("DESeq2")
 library('tidyverse')
 
-#count_data <- read.csv('TCGA-count-data.csv', header = TRUE, row.names = 1)
+#132count_data <- read.csv('TCGA-count-data.csv', header = TRUE, row.names = 1)
 
 Count_data = read.table(file = "TCGA-count-data.csv", header = T, sep = ",",row.names=1,check.names = FALSE)
 
