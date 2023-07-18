@@ -1,38 +1,24 @@
+#setwd("/Users/apple/Documents/nextgen")
+setwd("/Users/apple/Downloads/RNA-SEQ-Workshop/DESeq2-final")
 #install.packages("DESeq2")
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-
-BiocManager::install("DESeq2")
-
 library("DESeq2")
-library('tidyverse')
-
-#132count_data <- read.csv('TCGA-count-data.csv', header = TRUE, row.names = 1)
-
 Count_data = read.table(file = "TCGA-count-data.csv", header = T, sep = ",",row.names=1,check.names = FALSE)
-
 dim(Count_data)
-
 Col_data = read.table(file = "TCGA-column-data.csv", header = T, sep = ",",row.names = 1)
-
 rownames(Col_data)
-
 colnames(Count_data)
-
 all(rownames(Col_data)==colnames(Count_data))
-
 #boxplot(Count_data)
 hist(Count_data[,1]) # Plotting only the first sample (column 1)
-
+#install.packages("DESeq2")
+library(DESeq2) # load the DESeq2 package
 #count no of NA values in matrix
 class(Count_data)
 (is.na(Count_data))
-
 which(is.na(Count_data),arr.ind=TRUE)
-
 sum(is.na(Count_data))
 #replace missing values in matrix with rowsums
-#install.packages("zoo")
+install.packages("zoo")
 library(zoo)
 Count_data[]<-t(na.aggregate(t(Count_data)))
 Count_data
@@ -41,7 +27,7 @@ Count_data
 #removing genes with all zero values
 ##df1[rowSums(df1[])>0,]
 #?DESeq
-dds <- DESeqDataSetFromMatrix(countData = round(Count_data),
+dds = DESeqDataSetFromMatrix(countData = round(Count_data),
                              colData = Col_data,
                              design = ~ condition) # we're testing for the different condidtions
 dds$condition <- relevel(dds$condition, ref = "normal")
@@ -64,9 +50,6 @@ write.csv(resSig, "DE.csv")
 
 ##Write for volcano plot
 ##write.table(res1, file="Volcano", row.names=F, sep="\t")
-
-test <- res1 %>%
-  filter(padj<0.05)
 
 #Enhanced Volcano
 if (!require("BiocManager", quietly = TRUE))
@@ -126,8 +109,8 @@ EnhancedVolcano(res1,
                 ylab = bquote(~-Log[10]~italic(P)),
                 pCutoff = 0.05,
                 FCcutoff = 1.0,
-                transcriptPointSize = 0.5,
-                transcriptLabSize = 4.0,
+                #transcriptPointSize = 0.5,
+                #transcriptLabSize = 4.0,
                 colAlpha = 1,
                 shape = 19,
                 subtitle = NULL,
@@ -171,4 +154,3 @@ EnhancedVolcano(res1,
                 widthConnectors = 1.0,
                 colConnectors = 'black',
                 border = 'full' )
-
